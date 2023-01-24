@@ -1,4 +1,4 @@
-# openapi
+# Forem Python SDK
 
 <!-- Start SDK Installation -->
 ## SDK Installation
