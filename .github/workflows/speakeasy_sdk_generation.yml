@@ -10,7 +10,7 @@ jobs:
     uses: speakeasy-api/sdk-generation-action/.github/workflows/sdk-generation.yaml@v7
     with:
       speakeasy_version: latest
-      openapi_doc_location: https://github.com/forem/forem/blob/db821a806f1f150b69a219a1bf551b73113a9ee7/swagger/v1/api_v1.json
+      openapi_doc_location: https://raw.githubusercontent.com/forem/forem/db821a806f1f150b69a219a1bf551b73113a9ee7/swagger/v1/api_v1.json
       languages: |-
         - go: ./go-sdk
         - python: ./python-sdk
