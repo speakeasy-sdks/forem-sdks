@@ -1,4 +1,4 @@
-# openapi
+# Forem Typescript SDK
 
 <!-- Start SDK Installation -->
 ## SDK Installation
