@@ -3,9 +3,9 @@ package forem
 import (
 	"context"
 	"fmt"
+	"github.com/speakeasy-sdks/forem-sdks/go-client-sdk/pkg/models/operations"
+	"github.com/speakeasy-sdks/forem-sdks/go-client-sdk/pkg/utils"
 	"net/http"
-	"openapi/pkg/models/operations"
-	"openapi/pkg/utils"
 )
 
 type ProfileImages struct {

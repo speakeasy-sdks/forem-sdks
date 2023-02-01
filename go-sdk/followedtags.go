@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-type PodcastEpisodes struct {
+type FollowedTags struct {
 	_defaultClient  HTTPClient
 	_securityClient HTTPClient
 	_serverURL      string
@@ -19,8 +19,8 @@ type PodcastEpisodes struct {
 	_genVersion     string
 }
 
-func NewPodcastEpisodes(defaultClient, securityClient HTTPClient, serverURL, language, sdkVersion, genVersion string) *PodcastEpisodes {
-	return &PodcastEpisodes{
+func NewFollowedTags(defaultClient, securityClient HTTPClient, serverURL, language, sdkVersion, genVersion string) *FollowedTags {
+	return &FollowedTags{
 		_defaultClient:  defaultClient,
 		_securityClient: securityClient,
 		_serverURL:      serverURL,
@@ -30,22 +30,16 @@ func NewPodcastEpisodes(defaultClient, securityClient HTTPClient, serverURL, lan
 	}
 }
 
-// GetPodcastEpisodes - Podcast Episodes
-// This endpoint allows the client to retrieve a list of podcast episodes.
-//
-//	"Podcast episodes" are episodes belonging to podcasts.
-//	It will only return active (reachable) podcast episodes that belong to published podcasts available on the platform, ordered by descending publication date.
-//	It supports pagination, each page will contain 30 articles by default.
-func (s *PodcastEpisodes) GetPodcastEpisodes(ctx context.Context, request operations.GetPodcastEpisodesRequest) (*operations.GetPodcastEpisodesResponse, error) {
+// GetFollowedTags - Followed Tags
+// This endpoint allows the client to retrieve a list of the tags they follow.
+func (s *FollowedTags) GetFollowedTags(ctx context.Context) (*operations.GetFollowedTagsResponse, error) {
 	baseURL := s._serverURL
-	url := strings.TrimSuffix(baseURL, "/") + "/api/podcast_episodes"
+	url := strings.TrimSuffix(baseURL, "/") + "/api/follows/tags"
 
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
-
-	utils.PopulateQueryParams(ctx, req, request.QueryParams)
 
 	client := s._securityClient
 
@@ -57,7 +51,7 @@ func (s *PodcastEpisodes) GetPodcastEpisodes(ctx context.Context, request operat
 
 	contentType := httpRes.Header.Get("Content-Type")
 
-	res := &operations.GetPodcastEpisodesResponse{
+	res := &operations.GetFollowedTagsResponse{
 		StatusCode:  int64(httpRes.StatusCode),
 		ContentType: contentType,
 	}
@@ -65,14 +59,14 @@ func (s *PodcastEpisodes) GetPodcastEpisodes(ctx context.Context, request operat
 	case httpRes.StatusCode == 200:
 		switch {
 		case utils.MatchContentType(contentType, `application/json`):
-			var out []shared.PodcastEpisodeIndex
+			var out []shared.FollowedTag
 			if err := utils.UnmarshalJsonFromResponseBody(httpRes.Body, &out); err != nil {
 				return nil, err
 			}
 
-			res.PodcastEpisodeIndices = out
+			res.FollowedTags = out
 		}
-	case httpRes.StatusCode == 404:
+	case httpRes.StatusCode == 401:
 	}
 
 	return res, nil

@@ -4,7 +4,7 @@
 ## SDK Installation
 
 ```bash
-go get openapi
+go get github.com/speakeasy-sdks/forem-sdks/go-client-sdk
 ```
 <!-- End SDK Installation -->
 
@@ -14,9 +14,9 @@ go get openapi
 package main
 
 import (
-    "openapi"
-    "openapi/pkg/models/shared"
-    "openapi/pkg/models/operations"
+    "github.com/speakeasy-sdks/forem-sdks/go-client-sdk"
+    "github.com/speakeasy-sdks/forem-sdks/go-client-sdk/pkg/models/shared"
+    "github.com/speakeasy-sdks/forem-sdks/go-client-sdk/pkg/models/operations"
 )
 
 func main() {
@@ -32,26 +32,28 @@ func main() {
 
     s := forem.New(opts...)
     
-    req := operations.GetArticlesRequest{
-        QueryParams: operations.GetArticlesQueryParams{
-            CollectionID: 8717895732742165505,
-            Page: 2259404117704393152,
-            PerPage: 6050128673802995827,
-            State: "rising",
-            Tag: "consequuntur",
-            Tags: "dolor",
-            TagsExclude: "expedita",
-            Top: 6044372234677422456,
-            Username: "fugit",
+    req := operations.CreateArticleRequest{
+        Request: &shared.Article{
+            Article: &shared.ArticleArticle{
+                BodyMarkdown: "sit",
+                CanonicalURL: "voluptas",
+                Description: "culpa",
+                MainImage: "expedita",
+                OrganizationID: 3390393562759376202,
+                Published: false,
+                Series: "expedita",
+                Tags: "voluptas",
+                Title: "fugit",
+            },
         },
     }
     
-    res, err := s.Articles.GetArticles(ctx, req)
+    res, err := s.Articles.CreateArticle(ctx, req)
     if err != nil {
         log.Fatal(err)
     }
 
-    if res.ArticleIndices != nil {
+    if res.StatusCode == http.StatusOK {
         // handle response
     }
 ```
@@ -62,12 +64,22 @@ func main() {
 
 ### articles
 
+* `CreateArticle` - Publish article
+* `GetArticleByID` - Published article by id
+* `GetArticleByPath` - Published article by path
 * `GetArticles` - Published articles
+* `GetLatestArticles` - Published articles sorted by published date
 * `GetUserAllArticles` - User's all articles
 * `GetUserArticles` - User's articles
 * `GetUserPublishedArticles` - User's published articles
 * `GetUserUnpublishedArticles` - User's unpublished articles
 * `UnpublishArticle` - Unpublish an article
+* `UpdateArticle` - Update an article by id
+
+### comments
+
+* `GetCommentByID` - Comment by id
+* `GetCommentsByArticleID` - Comments
 
 ### display ads
 
@@ -76,6 +88,19 @@ func main() {
 * `PostAPIDisplayAds` - display ads
 * `PutAPIDisplayAdsID` - display ads
 * `PutAPIDisplayAdsIDUnpublish` - unpublish
+
+### followed_tags
+
+* `GetFollowedTags` - Followed Tags
+
+### followers
+
+* `GetFollowers` - Followers
+
+### pages
+
+* `GetAPIPages` - show details for all pages
+* `GetAPIPagesID` - show details for a page
 
 ### podcast_episodes
 

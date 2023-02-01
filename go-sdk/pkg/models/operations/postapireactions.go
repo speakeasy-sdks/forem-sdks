@@ -3,9 +3,11 @@ package operations
 type PostAPIReactionsCategoryEnum string
 
 const (
-	PostAPIReactionsCategoryEnumLike        PostAPIReactionsCategoryEnum = "like"
-	PostAPIReactionsCategoryEnumReadinglist PostAPIReactionsCategoryEnum = "readinglist"
-	PostAPIReactionsCategoryEnumUnicorn     PostAPIReactionsCategoryEnum = "unicorn"
+	PostAPIReactionsCategoryEnumLike          PostAPIReactionsCategoryEnum = "like"
+	PostAPIReactionsCategoryEnumUnicorn       PostAPIReactionsCategoryEnum = "unicorn"
+	PostAPIReactionsCategoryEnumExplodingHead PostAPIReactionsCategoryEnum = "exploding-head"
+	PostAPIReactionsCategoryEnumRaisedHands   PostAPIReactionsCategoryEnum = "raised_hands"
+	PostAPIReactionsCategoryEnumFire          PostAPIReactionsCategoryEnum = "fire"
 )
 
 type PostAPIReactionsReactableTypeEnum string
