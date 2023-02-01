@@ -1,13 +1,7 @@
 # Forem Java SDK
 
 <!-- Start SDK Installation -->
-## SDK Installation
 
-### Gradle
-
-```groovy
-implementation '::'
-```
 <!-- End SDK Installation -->
 
 ## SDK Example Usage
