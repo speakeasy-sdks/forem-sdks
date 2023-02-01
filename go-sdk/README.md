@@ -1,4 +1,4 @@
-# openapi
+# Forem Go SDK
 
 <!-- Start SDK Installation -->
 ## SDK Installation
