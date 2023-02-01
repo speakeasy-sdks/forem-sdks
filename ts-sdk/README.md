@@ -6,24 +6,24 @@
 ### NPM
 
 ```bash
-npm add openapi
+npm add @forem/sdk
 ```
 
 ### Yarn
 
 ```bash
-yarn add openapi
+yarn add @forem/sdk
 ```
 <!-- End SDK Installation -->
 
 ## SDK Example Usage
 <!-- Start SDK Example Usage -->
 ```typescript
-import { Forem, withSecurity} from "openapi";
-import { GetArticlesRequest, GetArticlesResponse } from "openapi/src/sdk/models/operations";
+import { ForemApi, withSecurity} from "@forem/sdk";
+import { CreateArticleRequest, CreateArticleResponse } from "@forem/sdk/src/sdk/models/operations";
 import { AxiosError } from "axios";
 
-const sdk = new Forem(withSecurity(
+const sdk = new ForemApi(withSecurity(
   security: {
     apiKey: {
       apiKey: "YOUR_API_KEY_HERE",
@@ -31,21 +31,23 @@ const sdk = new Forem(withSecurity(
   }
 ));
     
-const req: GetArticlesRequest = {
-  queryParams: {
-    collectionId: 8717895732742165505,
-    page: 2259404117704393152,
-    perPage: 6050128673802995827,
-    state: "rising",
-    tag: "consequuntur",
-    tags: "dolor",
-    tagsExclude: "expedita",
-    top: 6044372234677422456,
-    username: "fugit",
+const req: CreateArticleRequest = {
+  request: {
+    article: {
+      bodyMarkdown: "sit",
+      canonicalUrl: "voluptas",
+      description: "culpa",
+      mainImage: "expedita",
+      organizationId: 3390393562759376202,
+      published: false,
+      series: "expedita",
+      tags: "voluptas",
+      title: "fugit",
+    },
   },
 };
 
-sdk.articles.getArticles(req).then((res: GetArticlesResponse | AxiosError) => {
+sdk.articles.createArticle(req).then((res: CreateArticleResponse | AxiosError) => {
    // handle response
 });
 ```
@@ -56,12 +58,22 @@ sdk.articles.getArticles(req).then((res: GetArticlesResponse | AxiosError) => {
 
 ### articles
 
+* `createArticle` - Publish article
+* `getArticleById` - Published article by id
+* `getArticleByPath` - Published article by path
 * `getArticles` - Published articles
+* `getLatestArticles` - Published articles sorted by published date
 * `getUserAllArticles` - User's all articles
 * `getUserArticles` - User's articles
 * `getUserPublishedArticles` - User's published articles
 * `getUserUnpublishedArticles` - User's unpublished articles
 * `unpublishArticle` - Unpublish an article
+* `updateArticle` - Update an article by id
+
+### comments
+
+* `getCommentById` - Comment by id
+* `getCommentsByArticleId` - Comments
 
 ### display ads
 
@@ -70,6 +82,19 @@ sdk.articles.getArticles(req).then((res: GetArticlesResponse | AxiosError) => {
 * `postApiDisplayAds` - display ads
 * `putApiDisplayAdsId` - display ads
 * `putApiDisplayAdsIdUnpublish` - unpublish
+
+### followed_tags
+
+* `getFollowedTags` - Followed Tags
+
+### followers
+
+* `getFollowers` - Followers
+
+### pages
+
+* `getApiPages` - show details for all pages
+* `getApiPagesId` - show details for a page
 
 ### podcast_episodes
 

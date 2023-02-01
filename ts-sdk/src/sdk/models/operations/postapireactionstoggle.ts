@@ -3,8 +3,10 @@ import { SpeakeasyMetadata, SpeakeasyBase } from "../../../internal/utils";
 
 export enum PostApiReactionsToggleCategoryEnum {
     Like = "like",
-    Readinglist = "readinglist",
-    Unicorn = "unicorn"
+    Unicorn = "unicorn",
+    ExplodingHead = "exploding-head",
+    RaisedHands = "raised_hands",
+    Fire = "fire"
 }
 
 export enum PostApiReactionsToggleReactableTypeEnum {

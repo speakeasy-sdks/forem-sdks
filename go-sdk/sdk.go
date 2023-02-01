@@ -3,8 +3,8 @@ package forem
 import (
 	"net/http"
 
-	"openapi/pkg/models/shared"
-	"openapi/pkg/utils"
+	"github.com/speakeasy-sdks/forem-sdks/go-client-sdk/pkg/models/shared"
+	"github.com/speakeasy-sdks/forem-sdks/go-client-sdk/pkg/utils"
 )
 
 var ServerList = []string{
@@ -17,7 +17,11 @@ type HTTPClient interface {
 
 type Forem struct {
 	Articles        *Articles
+	Comments        *Comments
 	DisplayAds      *DisplayAds
+	FollowedTags    *FollowedTags
+	Followers       *Followers
+	Pages           *Pages
 	PodcastEpisodes *PodcastEpisodes
 	ProfileImages   *ProfileImages
 	Reactions       *Reactions
@@ -60,8 +64,8 @@ func WithSecurity(security shared.Security) SDKOption {
 func New(opts ...SDKOption) *Forem {
 	sdk := &Forem{
 		_language:   "go",
-		_sdkVersion: "",
-		_genVersion: "0.20.6",
+		_sdkVersion: "1.1.0",
+		_genVersion: "0.21.3",
 	}
 	for _, opt := range opts {
 		opt(sdk)
@@ -93,7 +97,43 @@ func New(opts ...SDKOption) *Forem {
 		sdk._genVersion,
 	)
 
+	sdk.Comments = NewComments(
+		sdk._defaultClient,
+		sdk._securityClient,
+		sdk._serverURL,
+		sdk._language,
+		sdk._sdkVersion,
+		sdk._genVersion,
+	)
+
 	sdk.DisplayAds = NewDisplayAds(
+		sdk._defaultClient,
+		sdk._securityClient,
+		sdk._serverURL,
+		sdk._language,
+		sdk._sdkVersion,
+		sdk._genVersion,
+	)
+
+	sdk.FollowedTags = NewFollowedTags(
+		sdk._defaultClient,
+		sdk._securityClient,
+		sdk._serverURL,
+		sdk._language,
+		sdk._sdkVersion,
+		sdk._genVersion,
+	)
+
+	sdk.Followers = NewFollowers(
+		sdk._defaultClient,
+		sdk._securityClient,
+		sdk._serverURL,
+		sdk._language,
+		sdk._sdkVersion,
+		sdk._genVersion,
+	)
+
+	sdk.Pages = NewPages(
 		sdk._defaultClient,
 		sdk._securityClient,
 		sdk._serverURL,

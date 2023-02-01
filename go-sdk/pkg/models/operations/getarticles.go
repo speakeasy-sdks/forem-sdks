@@ -1,7 +1,7 @@
 package operations
 
 import (
-	"openapi/pkg/models/shared"
+	"github.com/speakeasy-sdks/forem-sdks/go-client-sdk/pkg/models/shared"
 )
 
 type GetArticlesQueryParams struct {
