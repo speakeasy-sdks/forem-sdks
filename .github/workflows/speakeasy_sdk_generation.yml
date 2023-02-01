@@ -15,6 +15,7 @@ jobs:
         - go: ./go-sdk/
         - python: ./python-sdk/
         - typescript: ./ts-sdk/
+        - java: ./java-sdk/
       mode: pr
     secrets:
       github_access_token: ${{ secrets.GITHUB_TOKEN }}
