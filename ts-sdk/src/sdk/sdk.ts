@@ -3,7 +3,11 @@ import * as utils from "../internal/utils";
 import { Security } from "./models/shared";
 
 import { Articles } from "./articles";
+import { Comments } from "./comments";
 import { DisplayAds } from "./displayads";
+import { FollowedTags } from "./followedtags";
+import { Followers } from "./followers";
+import { Pages } from "./pages";
 import { PodcastEpisodes } from "./podcastepisodes";
 import { ProfileImages } from "./profileimages";
 import { Reactions } from "./reactions";
@@ -26,9 +30,13 @@ export type SDKProps = {
 }
 
 
-export class Forem {
+export class ForemApi {
   public articles: Articles;
+  public comments: Comments;
   public displayAds: DisplayAds;
+  public followedTags: FollowedTags;
+  public followers: Followers;
+  public pages: Pages;
   public podcastEpisodes: PodcastEpisodes;
   public profileImages: ProfileImages;
   public reactions: Reactions;
@@ -39,8 +47,8 @@ export class Forem {
   public _securityClient: AxiosInstance;
   public _serverURL: string;
   private _language = "typescript";
-  private _sdkVersion = "0.0.1";
-  private _genVersion = "0.20.6";
+  private _sdkVersion = "1.1.0";
+  private _genVersion = "0.21.3";
 
   constructor(props: SDKProps) {
     this._serverURL = props.serverUrl ?? ServerList[0];
@@ -67,7 +75,43 @@ export class Forem {
       this._genVersion
     );
     
+    this.comments = new Comments(
+      this._defaultClient,
+      this._securityClient,
+      this._serverURL,
+      this._language,
+      this._sdkVersion,
+      this._genVersion
+    );
+    
     this.displayAds = new DisplayAds(
+      this._defaultClient,
+      this._securityClient,
+      this._serverURL,
+      this._language,
+      this._sdkVersion,
+      this._genVersion
+    );
+    
+    this.followedTags = new FollowedTags(
+      this._defaultClient,
+      this._securityClient,
+      this._serverURL,
+      this._language,
+      this._sdkVersion,
+      this._genVersion
+    );
+    
+    this.followers = new Followers(
+      this._defaultClient,
+      this._securityClient,
+      this._serverURL,
+      this._language,
+      this._sdkVersion,
+      this._genVersion
+    );
+    
+    this.pages = new Pages(
       this._defaultClient,
       this._securityClient,
       this._serverURL,

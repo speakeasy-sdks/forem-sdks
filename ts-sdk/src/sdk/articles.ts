@@ -20,6 +20,155 @@ export class Articles {
   }
   
   /**
+   * createArticle - Publish article
+   *
+   * This endpoint allows the client to create a new article.
+   * 
+   * "Articles" are all the posts that users create on DEV that typically show up in the feed. They can be a blog post, a discussion question, a help thread etc. but is referred to as article within the code.
+  **/
+  createArticle(
+    req: operations.CreateArticleRequest,
+    config?: AxiosRequestConfig
+  ): Promise<operations.CreateArticleResponse> {
+    if (!(req instanceof utils.SpeakeasyBase)) {
+      req = new operations.CreateArticleRequest(req);
+    }
+    
+    const baseURL: string = this._serverURL;
+    const url: string = baseURL.replace(/\/$/, "") + "/api/articles";
+
+    let [reqBodyHeaders, reqBody]: [object, any] = [{}, {}];
+
+    try {
+      [reqBodyHeaders, reqBody] = utils.serializeRequestBody(req);
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        throw new Error(`Error serializing request body, cause: ${e.message}`);
+      }
+    }
+    
+    const client: AxiosInstance = this._securityClient!;
+    
+    const headers = {...reqBodyHeaders, ...config?.headers};
+    
+    const r = client.request({
+      url: url,
+      method: "post",
+      headers: headers,
+      data: reqBody, 
+      ...config,
+    });
+    
+    return r.then((httpRes: AxiosResponse) => {
+        const contentType: string = httpRes?.headers?.["content-type"] ?? "";
+
+        if (httpRes?.status == null) throw new Error(`status code not found in response: ${httpRes}`);
+        const res: operations.CreateArticleResponse = {statusCode: httpRes.status, contentType: contentType};
+        switch (true) {
+          case httpRes?.status == 201:
+            break;
+          case httpRes?.status == 401:
+            break;
+          case httpRes?.status == 422:
+            break;
+        }
+
+        return res;
+      })
+  }
+
+  
+  /**
+   * getArticleById - Published article by id
+   *
+   * This endpoint allows the client to retrieve a single published article given its `id`.
+  **/
+  getArticleById(
+    req: operations.GetArticleByIdRequest,
+    config?: AxiosRequestConfig
+  ): Promise<operations.GetArticleByIdResponse> {
+    if (!(req instanceof utils.SpeakeasyBase)) {
+      req = new operations.GetArticleByIdRequest(req);
+    }
+    
+    const baseURL: string = this._serverURL;
+    const url: string = utils.generateURL(baseURL, "/api/articles/{id}", req.pathParams);
+    
+    const client: AxiosInstance = this._securityClient!;
+    
+    
+    const r = client.request({
+      url: url,
+      method: "get",
+      ...config,
+    });
+    
+    return r.then((httpRes: AxiosResponse) => {
+        const contentType: string = httpRes?.headers?.["content-type"] ?? "";
+
+        if (httpRes?.status == null) throw new Error(`status code not found in response: ${httpRes}`);
+        const res: operations.GetArticleByIdResponse = {statusCode: httpRes.status, contentType: contentType};
+        switch (true) {
+          case httpRes?.status == 200:
+            if (utils.matchContentType(contentType, `application/json`)) {
+                res.getArticleById200ApplicationJSONObject = httpRes?.data;
+            }
+            break;
+          case httpRes?.status == 404:
+            break;
+        }
+
+        return res;
+      })
+  }
+
+  
+  /**
+   * getArticleByPath - Published article by path
+   *
+   * This endpoint allows the client to retrieve a single published article given its `path`.
+  **/
+  getArticleByPath(
+    req: operations.GetArticleByPathRequest,
+    config?: AxiosRequestConfig
+  ): Promise<operations.GetArticleByPathResponse> {
+    if (!(req instanceof utils.SpeakeasyBase)) {
+      req = new operations.GetArticleByPathRequest(req);
+    }
+    
+    const baseURL: string = this._serverURL;
+    const url: string = utils.generateURL(baseURL, "/api/articles/{username}/{slug}", req.pathParams);
+    
+    const client: AxiosInstance = this._securityClient!;
+    
+    
+    const r = client.request({
+      url: url,
+      method: "get",
+      ...config,
+    });
+    
+    return r.then((httpRes: AxiosResponse) => {
+        const contentType: string = httpRes?.headers?.["content-type"] ?? "";
+
+        if (httpRes?.status == null) throw new Error(`status code not found in response: ${httpRes}`);
+        const res: operations.GetArticleByPathResponse = {statusCode: httpRes.status, contentType: contentType};
+        switch (true) {
+          case httpRes?.status == 200:
+            if (utils.matchContentType(contentType, `application/json`)) {
+                res.getArticleByPath200ApplicationJSONObject = httpRes?.data;
+            }
+            break;
+          case httpRes?.status == 404:
+            break;
+        }
+
+        return res;
+      })
+  }
+
+  
+  /**
    * getArticles - Published articles
    *
    * This endpoint allows the client to retrieve a list of articles.
@@ -66,6 +215,59 @@ export class Articles {
 
         if (httpRes?.status == null) throw new Error(`status code not found in response: ${httpRes}`);
         const res: operations.GetArticlesResponse = {statusCode: httpRes.status, contentType: contentType};
+        switch (true) {
+          case httpRes?.status == 200:
+            if (utils.matchContentType(contentType, `application/json`)) {
+                res.articleIndices = httpRes?.data;
+            }
+            break;
+        }
+
+        return res;
+      })
+  }
+
+  
+  /**
+   * getLatestArticles - Published articles sorted by published date
+   *
+   * This endpoint allows the client to retrieve a list of articles. ordered by descending publish date.
+   * 
+   * It supports pagination, each page will contain 30 articles by default.
+  **/
+  getLatestArticles(
+    req: operations.GetLatestArticlesRequest,
+    config?: AxiosRequestConfig
+  ): Promise<operations.GetLatestArticlesResponse> {
+    if (!(req instanceof utils.SpeakeasyBase)) {
+      req = new operations.GetLatestArticlesRequest(req);
+    }
+    
+    const baseURL: string = this._serverURL;
+    const url: string = baseURL.replace(/\/$/, "") + "/api/articles/latest";
+    
+    const client: AxiosInstance = this._securityClient!;
+    
+    const qpSerializer: ParamsSerializerOptions = utils.getQueryParamSerializer(req.queryParams);
+
+    const requestConfig: AxiosRequestConfig = {
+      ...config,
+      params: req.queryParams,
+      paramsSerializer: qpSerializer,
+    };
+    
+    
+    const r = client.request({
+      url: url,
+      method: "get",
+      ...requestConfig,
+    });
+    
+    return r.then((httpRes: AxiosResponse) => {
+        const contentType: string = httpRes?.headers?.["content-type"] ?? "";
+
+        if (httpRes?.status == null) throw new Error(`status code not found in response: ${httpRes}`);
+        const res: operations.GetLatestArticlesResponse = {statusCode: httpRes.status, contentType: contentType};
         switch (true) {
           case httpRes?.status == 200:
             if (utils.matchContentType(contentType, `application/json`)) {
@@ -368,6 +570,67 @@ export class Articles {
           case httpRes?.status == 401:
             break;
           case httpRes?.status == 404:
+            break;
+        }
+
+        return res;
+      })
+  }
+
+  
+  /**
+   * updateArticle - Update an article by id
+   *
+   * This endpoint allows the client to update an existing article.
+   * 
+   * "Articles" are all the posts that users create on DEV that typically show up in the feed. They can be a blog post, a discussion question, a help thread etc. but is referred to as article within the code.
+  **/
+  updateArticle(
+    req: operations.UpdateArticleRequest,
+    config?: AxiosRequestConfig
+  ): Promise<operations.UpdateArticleResponse> {
+    if (!(req instanceof utils.SpeakeasyBase)) {
+      req = new operations.UpdateArticleRequest(req);
+    }
+    
+    const baseURL: string = this._serverURL;
+    const url: string = utils.generateURL(baseURL, "/api/articles/{id}", req.pathParams);
+
+    let [reqBodyHeaders, reqBody]: [object, any] = [{}, {}];
+
+    try {
+      [reqBodyHeaders, reqBody] = utils.serializeRequestBody(req);
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        throw new Error(`Error serializing request body, cause: ${e.message}`);
+      }
+    }
+    
+    const client: AxiosInstance = this._securityClient!;
+    
+    const headers = {...reqBodyHeaders, ...config?.headers};
+    
+    const r = client.request({
+      url: url,
+      method: "put",
+      headers: headers,
+      data: reqBody, 
+      ...config,
+    });
+    
+    return r.then((httpRes: AxiosResponse) => {
+        const contentType: string = httpRes?.headers?.["content-type"] ?? "";
+
+        if (httpRes?.status == null) throw new Error(`status code not found in response: ${httpRes}`);
+        const res: operations.UpdateArticleResponse = {statusCode: httpRes.status, contentType: contentType};
+        switch (true) {
+          case httpRes?.status == 200:
+            break;
+          case httpRes?.status == 401:
+            break;
+          case httpRes?.status == 404:
+            break;
+          case httpRes?.status == 422:
             break;
         }
 
