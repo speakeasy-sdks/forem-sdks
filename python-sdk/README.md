@@ -4,17 +4,17 @@
 ## SDK Installation
 
 ```bash
-pip install openapi
+pip install forem
 ```
 <!-- End SDK Installation -->
 
 ## SDK Example Usage
 <!-- Start SDK Example Usage -->
 ```python
-import forem
-from forem.models import operations, shared
+import foremapi
+from foremapi.models import operations, shared
 
-s = forem.Forem()
+s = foremapi.ForemAPI()
 s.config_security(
     security=shared.Security(
         api_key=shared.SchemeAPIKey(
@@ -23,23 +23,25 @@ s.config_security(
     )
 )
     
-req = operations.GetArticlesRequest(
-    query_params=operations.GetArticlesQueryParams(
-        collection_id=8717895732742165505,
-        page=2259404117704393152,
-        per_page=6050128673802995827,
-        state="rising",
-        tag="consequuntur",
-        tags="dolor",
-        tags_exclude="expedita",
-        top=6044372234677422456,
-        username="fugit",
+req = operations.CreateArticleRequest(
+    request=shared.Article(
+        article=shared.ArticleArticle(
+            body_markdown="sit",
+            canonical_url="voluptas",
+            description="culpa",
+            main_image="expedita",
+            organization_id=3390393562759376202,
+            published=False,
+            series="expedita",
+            tags="voluptas",
+            title="fugit",
+        ),
     ),
 )
     
-res = s.articles.get_articles(req)
+res = s.articles.create_article(req)
 
-if res.article_indices is not None:
+if res.status_code == 200:
     # handle response
 ```
 <!-- End SDK Example Usage -->
@@ -49,12 +51,22 @@ if res.article_indices is not None:
 
 ### articles
 
+* `create_article` - Publish article
+* `get_article_by_id` - Published article by id
+* `get_article_by_path` - Published article by path
 * `get_articles` - Published articles
+* `get_latest_articles` - Published articles sorted by published date
 * `get_user_all_articles` - User's all articles
 * `get_user_articles` - User's articles
 * `get_user_published_articles` - User's published articles
 * `get_user_unpublished_articles` - User's unpublished articles
 * `unpublish_article` - Unpublish an article
+* `update_article` - Update an article by id
+
+### comments
+
+* `get_comment_by_id` - Comment by id
+* `get_comments_by_article_id` - Comments
 
 ### display ads
 
@@ -63,6 +75,19 @@ if res.article_indices is not None:
 * `post_api_display_ads` - display ads
 * `put_api_display_ads_id_` - display ads
 * `put_api_display_ads_id_unpublish` - unpublish
+
+### followed_tags
+
+* `get_followed_tags` - Followed Tags
+
+### followers
+
+* `get_followers` - Followers
+
+### pages
+
+* `get_api_pages` - show details for all pages
+* `get_api_pages_id_` - show details for a page
 
 ### podcast_episodes
 
