@@ -1,1 +1,4 @@
 sdkclassname: "forem"
+go:
+  version: 1.0.0
+  packagename: github.com/speakeasy-sdks/forem-sdks/go-client-sdk

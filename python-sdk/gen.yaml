@@ -1,1 +1,5 @@
-sdkclassname: "forem"
+python:
+    version: 1.0.0
+    packagename: forem
+    author: forem
+sdkclassname: ForemAPI

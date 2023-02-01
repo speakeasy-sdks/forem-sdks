@@ -1,1 +1,5 @@
-sdkclassname: "forem"
+typescript:
+    version: 1.0.0
+    packagename: '@forem/sdk'
+    author: forem
+sdkclassname: ForemAPI
