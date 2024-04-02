@@ -1,0 +1,20 @@
+name: Generate
+true:
+  workflow_dispatch: {}
+jobs:
+  generate:
+    uses: speakeasy-api/sdk-generation-action/.github/workflows/sdk-generation.yaml@v7
+    with:
+      speakeasy_version: latest
+      openapi_doc_location: https://raw.githubusercontent.com/forem/forem/db821a806f1f150b69a219a1bf551b73113a9ee7/swagger/v1/api_v1.json
+      languages: '- go: ./go-sdk/
+
+        - python: ./python-sdk/
+
+        - typescript: ./ts-sdk/
+
+        - java: ./java-sdk/'
+      mode: pr
+    secrets:
+      github_access_token: ${{ secrets.GITHUB_TOKEN }}
+      speakeasy_api_key: ${{ secrets.SPEAKEASY_API_KEY }}
