@@ -10,7 +10,7 @@ jobs:
   generate:
     uses: speakeasy-api/sdk-generation-action/.github/workflows/sdk-generation.yaml@v7
     with:
-      languages: |-
+      languages: |
         - go: ./go-sdk/
         - python: ./python-sdk/
         - typescript: ./ts-sdk/
